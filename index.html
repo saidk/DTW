@@ -1,0 +1,116 @@
+<head>
+	<title>Dynamic time warping</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.com/libraries/Chart.js"></script>
+
+</head>
+<br />
+<div class="inner contact">
+                <!-- Form Area -->
+	<div class="contact-form">
+		<!-- Form -->
+			<!-- Left Inputs -->
+			<div class="col-xs-12 wow animated slideInLeft" data-wow-delay=".5s">
+				<!--<div class="form-group col-xs-2" style="display:inline-block">
+					<label>Random dataset</label></br>
+					<input type="checkbox"></input>
+				</div> -->
+				<label class="container form-group col-xs-2">Random sequence
+				  <input class="randomseq" name="randomseq" type="checkbox">
+				  <span class="checkmark"></span>
+				</label>
+				<div class="form-group col-xs-4" style="display:inline-block">
+					<label>Sequence 1</label>
+					<input name="sequence1" class="form"></input>
+				</div>
+				<div class="form-group col-xs-4" style="display:inline-block">
+					<label>Sequence 2</label>
+					<input name="sequence2" class="form"></input>	
+				</div>
+				<div class="form-group col-xs-2" style="display:inline-block">
+				<!-- Send Button -->
+					
+					<button style="margin-top:25px" id="target" name="submit" class="form-btn semibold">Generate</button> 
+				</div>
+			
+			
+			</div><!-- End Left Inputs -->
+			<!-- Right Inputs -->
+			
+			
+			<div class="grid-container col-xs-12">
+				<div class="grid-item col-xs-6">
+					<h1>Classic DTW</h1>
+					<canvas id="myChart" width="400" height="400"></canvas>
+				</div>
+			<div class="grid-item col-xs-6">
+				<h1>Weighted DTW</h1>
+				<div class="slidecontainer">
+				  <input type="range" min="-1" max="1" value="0" class="slider" id="myRangeWeighted">
+				  <p>Value: <span id="demoWeighted"></span></p>
+				</div>
+			</div>
+			<div class="grid-item col-xs-6">
+				<h1>Enhanced weighted DTW</h1>
+				<div class="slidecontainer">
+				  <input type="range" min="-1" max="1" value="0" class="slider" id="myRangeEnhancedOne">
+				  <p>Value: <span id="demoEnhancedOne"></span></p>
+				</div>
+			</div>  
+			<div class="grid-item col-xs-6">
+				<h1>Adaptive cost DTW</h1>
+			</div>
+			</div>
+			<!-- End Right Inputs -->
+			<!-- Bottom Submit -->
+			<!-- End Bottom Submit -->
+			<!-- Clear -->
+			<div class="clear"></div>
+		<script>
+			$(document).ready(function() {
+				$('.randomseq').click(function() {
+					if($(".randomseq").is(':checked')){
+						$('input[name=sequence1]').attr("disabled", true);
+						$('input[name=sequence2]').attr("disabled",true);
+					}
+					else{
+						$('input[name=sequence1]').attr("disabled", false);
+						$('input[name=sequence2]').attr("disabled",false);
+					}
+				});
+			});
+			$( "#target" ).click(function() {
+			  alert( "Handler for .click() called." );
+			});
+			//weighted
+			var sliderWeighted = document.getElementById("myRangeWeighted");
+			var outputWeighted = document.getElementById("demoWeighted");
+			outputWeighted.innerHTML = sliderWeighted.value;
+
+			sliderWeighted.oninput = function() {
+			  outputWeighted.innerHTML = this.value;
+			}
+			//enhanced weighted
+			var sliderEnhancedOne = document.getElementById("myRangeEnhancedOne");
+			var outputEnhancedOne = document.getElementById("demoEnhancedOne");
+			outputEnhancedOne.innerHTML = sliderEnhancedOne.value;
+
+			sliderEnhancedOne.oninput = function() {
+			  outputEnhancedOne.innerHTML = this.value;
+			}
+			
+			//draw chart
+			var ctx = $("#myChart");
+			var myLineChart = new Chart(ctx, {
+				type: 'line',
+				data: data,
+				options: options
+			});
+		</script>
+	
+	</div><!-- End Contact Form Area -->
+</div><!-- End Inner -->
+
+
