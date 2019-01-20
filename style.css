@@ -234,3 +234,9 @@ input {
   background: #4CAF50;
   cursor: pointer;
 }
+canvas{
+
+  width:350px !important;
+  height:200px !important;
+
+}

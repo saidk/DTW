@@ -3,10 +3,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.com/libraries/Chart.js"></script>
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 </head>
-<br />
+<br/>
 <div class="inner contact">
                 <!-- Form Area -->
 	<div class="contact-form">
@@ -43,19 +43,19 @@
 			<div class="grid-container col-xs-12">
 				<div class="grid-item col-xs-6">
 					<h1>Classic DTW</h1>
-					<canvas id="myChart" width="400" height="400"></canvas>
+					<div id="tester" style="width:230px;height:150px;"></div>
 				</div>
 			<div class="grid-item col-xs-6">
 				<h1>Weighted DTW</h1>
 				<div class="slidecontainer">
-				  <input type="range" min="-1" max="1" value="0" class="slider" id="myRangeWeighted">
+				  <input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeWeighted">
 				  <p>Value: <span id="demoWeighted"></span></p>
 				</div>
 			</div>
 			<div class="grid-item col-xs-6">
 				<h1>Enhanced weighted DTW</h1>
 				<div class="slidecontainer">
-				  <input type="range" min="-1" max="1" value="0" class="slider" id="myRangeEnhancedOne">
+				  <input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeEnhancedOne">
 				  <p>Value: <span id="demoEnhancedOne"></span></p>
 				</div>
 			</div>  
@@ -102,12 +102,75 @@
 			}
 			
 			//draw chart
-			var ctx = $("#myChart");
-			var myLineChart = new Chart(ctx, {
-				type: 'line',
-				data: data,
-				options: options
-			});
+			var first = [2, 5, 5, 7, 9, 1, 6, 6, 8, 9, 1, 6, 6, 8, 9];
+			var second =  [3, 2, 2, 1, 1, 8, 3, 2, 6, 9, 1, 6, 1];
+			var firstt = [];
+			first.forEach(function(element) {
+				firstt.push(element+20);
+			}); 
+			var path = [[0, 12], [1, 11], [2, 11], [3, 11], [4, 10], [5, 9], [6, 9], [7, 8], [8, 8], [9, 8], [10, 8], [11, 8], [12, 8], [13, 8], [14, 7], [14, 6], [14, 5], [14, 4], [14, 3], [14, 2], [14, 1], [14, 0]]
+			var trace1 = {
+			  x: [0, 1, 2, 3, 4, 5, 6 ,7 ,8 ,9, 10, 11, 12, 13, 14],
+			  y: firstt,
+			  type: 'scatter',
+			  marker: {color: '#ff0000',size: 8}
+			};
+
+			var trace2 = {
+			  x: [0, 1, 2, 3, 4, 5, 6 ,7 ,8 ,9, 10, 11, 12],
+			  y:  second,
+			  type: 'scatter',
+			  marker: {color: '#0000ff',size: 8}
+			};
+			var traces = [];
+			for (var x = 0; x < path.length; x++) { 
+				var i = path[x][0];
+				var j = path[x][1];
+				//console.log(path[i][1]);
+				traces.push({x:[firstt.length - i - 1,  j ], y:[firstt[firstt.length - i - 1],second[j]],type: 'scatter', marker: {color: '#000000',size: 8}});
+			}
+			var data = [trace1, trace2];
+
+			traces.forEach(function(element) {
+				data.push(element);
+			}); 
+			var layout = {
+				  autosize: false,
+				  width: 600,
+				  height: 150,
+				  margin: {
+					l: 1,
+					r: 1,
+					b: 1,
+					t: 1,
+					pad: 1
+				  },
+				  showlegend:false,
+				  hovermode:false,
+				  textinfo:false,
+				  showgrid:false,
+				  xaxis: {
+						  title: '',
+						  autorange: true,
+						  showgrid: false,
+						  zeroline: false,
+						  showline: false,
+						  autotick: true,
+						  ticks: '',
+						  showticklabels: false
+					  },
+				  yaxis:{
+						title: '',
+						autorange: true,
+						showgrid: false,
+						zeroline: false,
+						showline: false,
+						autotick: true,
+						ticks: '',
+						showticklabels: false
+				  }
+				};
+			Plotly.newPlot('tester', data,layout,{displayModeBar: false});
 		</script>
 	
 	</div><!-- End Contact Form Area -->
