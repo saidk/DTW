@@ -1,12 +1,12 @@
+<!DOCTYPE html>
+<html>
 <head>
 	<title>Dynamic time warping</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="style.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 </head>
-<br/>
+<body>
 <div class="inner contact">
                 <!-- Form Area -->
 	<div class="contact-form">
@@ -23,11 +23,11 @@
 				</label>
 				<div class="form-group col-xs-4" style="display:inline-block">
 					<label>Sequence 1</label>
-					<input name="sequence1" class="form"></input>
+					<input name="sequence1" id="sequence1" class="form"></input>
 				</div>
 				<div class="form-group col-xs-4" style="display:inline-block">
 					<label>Sequence 2</label>
-					<input name="sequence2" class="form"></input>	
+					<input name="sequence2" id="sequence2" class="form"></input>	
 				</div>
 				<div class="form-group col-xs-2" style="display:inline-block">
 				<!-- Send Button -->
@@ -43,13 +43,16 @@
 			<div class="grid-container col-xs-12">
 				<div class="grid-item col-xs-6">
 					<h1>Classic DTW</h1>
-					<div id="tester" style="width:230px;height:150px;"></div>
+					<div id="dtw-chart" style="width:230px;height:150px;"></div>
+					<table id="dtw-table" border="1"></table>
 				</div>
 			<div class="grid-item col-xs-6">
 				<h1>Weighted DTW</h1>
 				<div class="slidecontainer">
 				  <input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeWeighted">
 				  <p>Value: <span id="demoWeighted"></span></p>
+				  <div id="wdtw-chart" style="width:230px;height:150px;"></div>
+				<table id="wdtw-table" border="1"></table>
 				</div>
 			</div>
 			<div class="grid-item col-xs-6">
@@ -68,112 +71,14 @@
 			<!-- End Bottom Submit -->
 			<!-- Clear -->
 			<div class="clear"></div>
-		<script>
-			$(document).ready(function() {
-				$('.randomseq').click(function() {
-					if($(".randomseq").is(':checked')){
-						$('input[name=sequence1]').attr("disabled", true);
-						$('input[name=sequence2]').attr("disabled",true);
-					}
-					else{
-						$('input[name=sequence1]').attr("disabled", false);
-						$('input[name=sequence2]').attr("disabled",false);
-					}
-				});
-			});
-			$( "#target" ).click(function() {
-			  alert( "Handler for .click() called." );
-			});
-			//weighted
-			var sliderWeighted = document.getElementById("myRangeWeighted");
-			var outputWeighted = document.getElementById("demoWeighted");
-			outputWeighted.innerHTML = sliderWeighted.value;
-
-			sliderWeighted.oninput = function() {
-			  outputWeighted.innerHTML = this.value;
-			}
-			//enhanced weighted
-			var sliderEnhancedOne = document.getElementById("myRangeEnhancedOne");
-			var outputEnhancedOne = document.getElementById("demoEnhancedOne");
-			outputEnhancedOne.innerHTML = sliderEnhancedOne.value;
-
-			sliderEnhancedOne.oninput = function() {
-			  outputEnhancedOne.innerHTML = this.value;
-			}
-			
-			//draw chart
-			var first = [2, 5, 5, 7, 9, 1, 6, 6, 8, 9, 1, 6, 6, 8, 9];
-			var second =  [3, 2, 2, 1, 1, 8, 3, 2, 6, 9, 1, 6, 1];
-			var firstt = [];
-			first.forEach(function(element) {
-				firstt.push(element+20);
-			}); 
-			var path = [[0, 12], [1, 11], [2, 11], [3, 11], [4, 10], [5, 9], [6, 9], [7, 8], [8, 8], [9, 8], [10, 8], [11, 8], [12, 8], [13, 8], [14, 7], [14, 6], [14, 5], [14, 4], [14, 3], [14, 2], [14, 1], [14, 0]]
-			var trace1 = {
-			  x: [0, 1, 2, 3, 4, 5, 6 ,7 ,8 ,9, 10, 11, 12, 13, 14],
-			  y: firstt,
-			  type: 'scatter',
-			  marker: {color: '#ff0000',size: 8}
-			};
-
-			var trace2 = {
-			  x: [0, 1, 2, 3, 4, 5, 6 ,7 ,8 ,9, 10, 11, 12],
-			  y:  second,
-			  type: 'scatter',
-			  marker: {color: '#0000ff',size: 8}
-			};
-			var traces = [];
-			for (var x = 0; x < path.length; x++) { 
-				var i = path[x][0];
-				var j = path[x][1];
-				//console.log(path[i][1]);
-				traces.push({x:[firstt.length - i - 1,  j ], y:[firstt[firstt.length - i - 1],second[j]],type: 'scatter', marker: {color: '#000000',size: 8}});
-			}
-			var data = [trace1, trace2];
-
-			traces.forEach(function(element) {
-				data.push(element);
-			}); 
-			var layout = {
-				  autosize: false,
-				  width: 600,
-				  height: 150,
-				  margin: {
-					l: 1,
-					r: 1,
-					b: 1,
-					t: 1,
-					pad: 1
-				  },
-				  showlegend:false,
-				  hovermode:false,
-				  textinfo:false,
-				  showgrid:false,
-				  xaxis: {
-						  title: '',
-						  autorange: true,
-						  showgrid: false,
-						  zeroline: false,
-						  showline: false,
-						  autotick: true,
-						  ticks: '',
-						  showticklabels: false
-					  },
-				  yaxis:{
-						title: '',
-						autorange: true,
-						showgrid: false,
-						zeroline: false,
-						showline: false,
-						autotick: true,
-						ticks: '',
-						showticklabels: false
-				  }
-				};
-			Plotly.newPlot('tester', data,layout,{displayModeBar: false});
-		</script>
 	
 	</div><!-- End Contact Form Area -->
 </div><!-- End Inner -->
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="dtw.js"></script>
+<script src="wdtw.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
