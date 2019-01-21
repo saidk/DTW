@@ -45,7 +45,7 @@ function drawChart(first, second, path, target){
     }
     var firstt = [];
     first.forEach(function(element) {
-        firstt.push(element+20);
+        firstt.push(parseInt(element) + 20);
     }); 
     var trace1 = {
       x: first_x,
@@ -65,7 +65,7 @@ function drawChart(first, second, path, target){
         var i = path[x][0];
         var j = path[x][1];
         console.log(path[i][1]);
-        traces.push({x:[firstt.length - i - 1,  j ], y:[firstt[firstt.length - i - 1],second[j]],type: 'scatter', marker: {color: '#000000',size: 8}});
+        traces.push({x:[firstt.length - i - 1,  j ], y:[firstt[firstt.length - i - 1],second[j]],type: 'scatter', marker: {color: '#000000',size: 1}});
     }
     var data = [trace1, trace2];
     
@@ -74,7 +74,7 @@ function drawChart(first, second, path, target){
     }); 
     var layout = {
           autosize: false,
-          width: 600,
+          width: 900,
           height: 150,
           margin: {
             l: 1,
@@ -119,7 +119,7 @@ function DTW(ser1, ser2){
     path = dtw.getPath();
     matrix = dtw.getMatrix();
 
-    drawTable(ser1, ser2, matrix, path, "#dtw-table");
+    // drawTable(ser1, ser2, matrix, path, "#dtw-table");
     drawChart(ser1, ser2, path, "dtw-chart");
         
 }
@@ -130,7 +130,7 @@ function WDTW(ser1, ser2, wmax, g){
     path = wdtw.getPath();
     matrix = wdtw.getMatrix();
 
-    drawTable(ser1, ser2, matrix, path, "#wdtw-table");
+    // drawTable(ser1, ser2, matrix, path, "#wdtw-table");
     drawChart(ser1, ser2, path, "wdtw-chart");
 };
 
