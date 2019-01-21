@@ -10,6 +10,7 @@ function isItemInArray(array, item) {
 
 function drawTable(ser1, ser2, matrix, path, target){
     var s = "";
+    $(target).html("");
     for(var i=0; i< ser1.length; i++){
         var y = ser1.length - i - 1;
         s = "<td style=\"color: #ccc\">" + ser1[y] + ":</td> "; 
@@ -145,6 +146,7 @@ function EWDTW(ser1, ser2, wmax, g){
 
 
 $(document).ready(function() {
+    var ser1,ser2,wmax=0,g=0;
     $('.randomseq').click(function() {
         if($(".randomseq").is(':checked')){
             $('input[name=sequence1]').attr("disabled", true);
@@ -157,10 +159,8 @@ $(document).ready(function() {
     });
 
     $("#target").click(function() {
-        var ser1 = $("#sequence1").val().split(",");
-        var ser2 = $("#sequence2").val().split(",");
-        var wmax = 0.1;
-        var g    = 0.1;
+        ser1 = $("#sequence1").val().split(",");
+        ser2 = $("#sequence2").val().split(",");
         console.log(ser1);
         console.log(ser2);
         
@@ -170,12 +170,28 @@ $(document).ready(function() {
         // EWDTW(ser1,ser2);
     });
 
-
+    $("#myRangeWeighted").on('change', function(){
+        wmax = $(this).val();
+        // $("#demoWeighted").text(wmax);
+        if(ser1 == null || ser2 == null){
+            ser1 = $("#sequence1").val().split(",");
+            ser2 = $("#sequence2").val().split(",");
+        }
+        WDTW(ser1,ser2,wmax,g);
+    });
+    $("#myRangeG").on('change', function(){
+        g = $(this).val();
+        if(ser1 == null || ser2 == null){
+            ser1 = $("#sequence1").val().split(",");
+            ser2 = $("#sequence2").val().split(",");
+        }
+        WDTW(ser1,ser2,wmax,g);
+    });
 });
 
 
 
-//weighted
+// weighted
 var sliderWeighted = document.getElementById("myRangeWeighted");
 var outputWeighted = document.getElementById("demoWeighted");
 outputWeighted.innerHTML = sliderWeighted.value;
@@ -183,6 +199,15 @@ outputWeighted.innerHTML = sliderWeighted.value;
 sliderWeighted.oninput = function() {
   outputWeighted.innerHTML = this.value;
 }
+
+var sliderG = document.getElementById("myRangeG");
+var outputG = document.getElementById("demoG");
+outputG.innerHTML = sliderG.value;
+
+sliderG.oninput = function() {
+  outputG.innerHTML = this.value;
+}
+
 //enhanced weighted
 var sliderEnhancedOne = document.getElementById("myRangeEnhancedOne");
 var outputEnhancedOne = document.getElementById("demoEnhancedOne");
