@@ -21,9 +21,7 @@
         var mc = ser1[Math.floor(ser1.length / 2)];
 
         var weight = function(k){
-            console.log(k, mc);
             var w =  wmax / (1 + Math.exp(-1 * g * (k - mc)));
-            console.log(w);
             return w;
         }
 
@@ -37,9 +35,15 @@
 
             matrix = [];
 
-            for ( var i = 0; i < ser1.length; i++ ) {
+            for(var i = 0; i < ser1.length; i++){
+                matrix[i] = [];
+                for(var j = 0; j < ser2.length; j++){
+                    matrix[i].push(0);
+                }
+            }
 
-                matrix[ i ] = [];
+            for ( var i = 0; i < ser1.length; i++ ) {
+                var y = ser1.length - i - 1;
 
                 for ( var j = 0; j < ser2.length; j++ ) {
 
@@ -47,13 +51,13 @@
 
                     if ( i > 0 ) {
 
-                        cost = Math.min( cost, matrix[ i - 1 ][ j ] );
+                        cost = Math.min( cost, matrix[ y + 1][ j ] );
 
                         if ( j > 0 ) {
 
-                            cost = Math.min( cost, matrix[ i - 1 ][ j - 1 ] );
+                            cost = Math.min( cost, matrix[ y + 1 ][ j - 1 ] );
 
-                            cost = Math.min( cost, matrix[ i ][ j - 1 ] );
+                            cost = Math.min( cost, matrix[ y ][ j - 1 ] );
 
                         }
 
@@ -61,7 +65,7 @@
 
                         if ( j > 0 ) {
 
-                            cost = Math.min( cost, matrix[ i ][ j - 1 ] );
+                            cost = Math.min( cost, matrix[ y ][ j - 1 ] );
 
                         } else {
 
@@ -71,7 +75,7 @@
 
                     }
 
-                    matrix[ i ][ j ] = cost + weight(Math.abs(i-j))*(ser1[ i ] - ser2[ j ] )*(ser1[ i ] - ser2[ j ] );
+                    matrix[ y ][ j ] = cost + weight(Math.abs(i-j))*(ser1[ i ] - ser2[ j ] )*(ser1[ i ] - ser2[ j ] );
 
                 }
 

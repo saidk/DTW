@@ -50,26 +50,26 @@
 				<h1>Weighted DTW</h1>
 				<div class="slidecontainer">
 				  <input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeWeighted">
-				  <p>Value: <span id="demoWeighted"></span></p>
-				  <div id="wdtw-chart" style="width:230px;height:150px;"></div>
-				<table class="comicGreen" id="wdtw-table" border="1"></table>
+				  <p>w<sub>max</sub>: <span id="demoWeighted">0</span></p>
 				</div>
 				<div class="slidecontainer">
-					<input step="0.001" type="range" min="-10" max="10" value="0" class="slider" id="myRangeG">
-					<p>Value: <span id="demoG"></span></p>
+					<input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeG">
+					<p>g: <span id="demoG">0</span></p>
 				  </div>
 				<div id="wdtw-chart" style="width:230px;height:150px;"></div>
-				<table id="wdtw-table" border="1"></table>
-			</div>
-			<div class="grid-item col-xs-6">
-				<h1>Enhanced weighted DTW</h1>
-				<div class="slidecontainer">
-				  <input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeEnhancedOne">
-				  <p>Value: <span id="demoEnhancedOne"></span></p>
-				</div>
+				<table class="comicGreen" id="wdtw-table" border="1"></table>
 			</div>  
 			<div class="grid-item col-xs-6">
 				<h1>Adaptive cost DTW</h1>
+				<div class="slidecontainer">
+					<input step="0.001" type="range" min="-1" max="1" value="0" class="slider" id="myRangeACG">
+					<p>g: <span id="demoACG">0</span></p>
+				  </div>
+				<div id="acdtw-chart" style="width:230px;height:150px;"></div>
+				<table class="comicGreen" id="acdtw-table" border="1"></table>
+			</div>
+			<div class="grid-item col-xs-6">
+				<h1>Enhanced weighted DTW</h1>
 			</div>
 			</div>
 			<!-- End Right Inputs -->
@@ -85,6 +85,7 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="dtw.js"></script>
 <script src="wdtw.js"></script>
+<script src="ac-dtw.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

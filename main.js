@@ -16,10 +16,10 @@ function drawTable(ser1, ser2, matrix, path, target){
         s = "<td style=\"color: #ccc\">" + ser1[y] + ":</td> "; 
         for(var j =0; j<ser2.length; j++){
             if(isItemInArray(path, [i,j])){
-                s+="<td style=\"color: red\">" + matrix[i][j] + "</td> ";
+                s+="<td style=\"color: red\">" + Math.round(matrix[i][j]) + "</td> ";
             }
             else{
-                s+="<td style=\"color: #333\">" + matrix[i][j] + "</td> ";
+                s+="<td style=\"color: #333\">" + Math.round(matrix[i][j]) + "</td> ";
             }
         } 
         $(target).append("<tr>"+s+"</tr>");
@@ -67,7 +67,6 @@ function drawChart(first, second, path, target){
     for (var x = 0; x < path.length; x++) { 
         var i = path[x][0];
         var j = path[x][1];
-        console.log(path[i][1]);
         data.push({x:[firstt.length - i - 1,  j ], y:[firstt[firstt.length - i - 1],second[j]],type: 'scatter', marker: {color: '#000000',size: 1}});
     }
     
@@ -136,8 +135,14 @@ function WDTW(ser1, ser2, wmax, g){
     drawChart(ser1, ser2, path, "wdtw-chart");
 };
 
-function ACDTW(ser1, ser2, wmax, g){
+function ACDTW(ser1, ser2, g){
     // TO DO: Implement ACDTW;
+    var acdtw = new AdaptiveCostDynamicTimeWarping(ser1, ser2, g);
+    path = acdtw.getPath();
+    matrix = acdtw.getMatrix();
+
+    drawTable(ser1, ser2, matrix, path, "#acdtw-table");
+    drawChart(ser1, ser2, path, "acdtw-chart");
 };
 
 function EWDTW(ser1, ser2, wmax, g){
@@ -146,7 +151,7 @@ function EWDTW(ser1, ser2, wmax, g){
 
 
 $(document).ready(function() {
-    var ser1,ser2,wmax=0,g=0;
+    var ser1,ser2,wmax=0,g=1;
     $('.randomseq').click(function() {
         if($(".randomseq").is(':checked')){
             $('input[name=sequence1]').attr("disabled", true);
@@ -166,55 +171,36 @@ $(document).ready(function() {
         
         DTW(ser1, ser2);
         WDTW(ser1,ser2,wmax,g);
-        // ACDTW(ser1,ser2,g);
+        ACDTW(ser1,ser2,g);
         // EWDTW(ser1,ser2);
     });
 
-    $("#myRangeWeighted").on('change', function(){
+    $("#myRangeWeighted").on('input', function(){
         wmax = $(this).val();
-        // $("#demoWeighted").text(wmax);
+        $("#demoWeighted").text(wmax);
         if(ser1 == null || ser2 == null){
             ser1 = $("#sequence1").val().split(",");
             ser2 = $("#sequence2").val().split(",");
         }
         WDTW(ser1,ser2,wmax,g);
     });
-    $("#myRangeG").on('change', function(){
+    $("#myRangeG").on('input', function(){
         g = $(this).val();
+        $("demoG").text(g);
         if(ser1 == null || ser2 == null){
             ser1 = $("#sequence1").val().split(",");
             ser2 = $("#sequence2").val().split(",");
         }
         WDTW(ser1,ser2,wmax,g);
+    });
+    $("#myRangeACG").on('input', function(){
+        g = $(this).val();
+        $("#demoACG").text(g);
+        if(ser1 == null || ser2 == null){
+            ser1 = $("#sequence1").val().split(",");
+            ser2 = $("#sequence2").val().split(",");
+        }
+        ACDTW(ser1,ser2,g);
     });
 });
-
-
-
-// weighted
-var sliderWeighted = document.getElementById("myRangeWeighted");
-var outputWeighted = document.getElementById("demoWeighted");
-outputWeighted.innerHTML = sliderWeighted.value;
-
-sliderWeighted.oninput = function() {
-  outputWeighted.innerHTML = this.value;
-}
-
-var sliderG = document.getElementById("myRangeG");
-var outputG = document.getElementById("demoG");
-outputG.innerHTML = sliderG.value;
-
-sliderG.oninput = function() {
-  outputG.innerHTML = this.value;
-}
-
-//enhanced weighted
-var sliderEnhancedOne = document.getElementById("myRangeEnhancedOne");
-var outputEnhancedOne = document.getElementById("demoEnhancedOne");
-outputEnhancedOne.innerHTML = sliderEnhancedOne.value;
-
-sliderEnhancedOne.oninput = function() {
-  outputEnhancedOne.innerHTML = this.value;
-}
-
 

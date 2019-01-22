@@ -2,7 +2,7 @@
 
     "use strict";
 
-    function DynamicTimeWarping ( ts1, ts2 ) {
+    function AdaptiveCostDynamicTimeWarping ( ts1, ts2, g ) {
 
         var ser1 = ts1;
 
@@ -14,7 +14,15 @@
 
         var path;
 
+        var g = g;
 
+        var r = Math.min(ser1.length, ser2.length) / Math.max(ser1.length, ser2.length);
+
+
+        var c = function(x){
+            console.log(x);
+            return g*r*x + 1;
+        }
 
         var getDistance = function() {
 
@@ -24,43 +32,71 @@
 
             }
 
-            matrix = [];
-
-            for(var i = 0; i < ser1.length; i++){
+            matrix = []; var A=[]; var B=[];  
+            for( var i = 0; i < ser1.length; i++ ){
+                A[i] = [];
+                B[i] = [];
                 matrix[i] = [];
-                for(var j = 0; j < ser2.length; j++){
+                for ( var j = 0; j < ser2.length; j++ ) {
+                    A[i][j] = 0;
+                    B[i].push(0);
                     matrix[i].push(0);
                 }
             }
 
-            for ( var i = 0; i < ser1.length; i++ ) {
-                var y = ser1.length - i - 1;
+            A[0][0] = 1; 
+            B[0][0] = 1;
 
+            for ( var i = 0; i < ser1.length; i++ ) {
+
+                var y = ser1.length - i - 1;
                 for ( var j = 0; j < ser2.length; j++ ) {
 
-                    var cost = Infinity;
+                    var cost= Infinity;
+                    
+                    var d1 = cost, d2 = cost, d3 = cost;
 
-                    if ( i > 0 && j > 0) {
-                        cost = Math.min( matrix[ y + 1 ][ j ], Math.min( matrix[ y ][ j - 1 ] , matrix[ y + 1 ][ j - 1 ] ));
+                    var dist = (ser1[ i ] - ser2[ j ] )*(ser1[ i ] - ser2[ j ] );
+
+                    if(i > 0){
+                        
+                        d1 =  c(B[i-1][j])*dist  + matrix[ y+1 ][ j ];
+
+                        if(j > 0){
+                            d2 =  dist + matrix[ y+1 ][ j - 1 ];
+                        }
                     }
-                    else if( y == 0 && j > 0){
-                        cost =  matrix[ y  ][ j  - 1 ] ;
-                    }
-                    else if(i > 0 && j == 0 ) {
-                        cost =  matrix[ y + 1 ][ j  ] ;
-                    }
-                    else {
-                        cost = 0;
+                    else{
+
+                        if( j > 0 ){
+                            console.log(i, j-1 , A[i][ j-1 ]);
+                            d3 =  c( A[i][j-1] ) * dist +  matrix[ y ][ j - 1 ];
+                        }else{
+                            cost = dist;
+                        }
                     }
 
-                    matrix[ y ][ j ] = cost + (ser1[ i ] - ser2[ j ] )*(ser1[ i ] - ser2[ j ] );
+                    matrix[ y ][ j ] = Math.min(Math.min(d1,cost), Math.min(d2,d3));
+                    if(matrix[y][j] == d1){
+                        A[i][j] = 1;
+                        B[i][j] = B[i-1][j] + 1;
+                    }
+                    else if(matrix[y][j] == d2){
+                        A[i][j] = 1;
+                        B[i][j] = 1;
+                    }
+                    else if(matrix[y][j] == d3){
+                        A[i][j] = A[i][j-1] + 1;
+                        B[i][j] = 1;
+                    }else{
+                        //do nothing
+                    }
 
                 }
 
             }
 
 
-            // console.log(matrix);
             return Math.sqrt(matrix[ ser1.length - 1 ][ ser2.length - 1 ]);
 
         };
@@ -127,6 +163,7 @@
 
         this.getPath = getPath;
 
+
         var getMatrix = function(){
             if ( matrix === undefined ) {
 
@@ -137,7 +174,6 @@
         }
 
         this.getMatrix = getMatrix;
-
     }
 
 
@@ -154,15 +190,15 @@
 
         if ( typeof module !== "undefined" && !module.nodeType && module.exports ) {
 
-            exports = module.exports = DynamicTimeWarping;
+            exports = module.exports = AdaptiveCostDynamicTimeWarping;
 
         }
 
-        exports.DynamicTimeWarping = DynamicTimeWarping;
+        exports.AdaptiveCostDynamicTimeWarping = AdaptiveCostDynamicTimeWarping;
 
     } else {
 
-        root.DynamicTimeWarping = DynamicTimeWarping;
+        root.AdaptiveCostDynamicTimeWarping = AdaptiveCostDynamicTimeWarping;
 
     }
 
@@ -172,7 +208,7 @@
 
         define( "dynamic-time-warping", [], function() {
 
-            return DynamicTimeWarping;
+            return AdaptiveCostDynamicTimeWarping;
 
         } );
 
