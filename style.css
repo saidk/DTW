@@ -286,3 +286,9 @@ table.comicGreen tfoot {
 table.comicGreen tfoot td {
   font-size: 21px;
 }
+td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

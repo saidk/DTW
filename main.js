@@ -53,6 +53,8 @@ function drawTable(ser1, ser2, matrix, path, target){
 	$('.grid-item').css('height', '100%');
 	var height = $('.weighted_dtw').outerHeight()
 	$('.classic_dtw').css('height', height);
+	var height_adaptive_cost = $('.adaptive_cost_dtw').outerHeight()
+	$('.enhanced_dtw').css('height', height_adaptive_cost);
 	
 }
 
@@ -98,7 +100,7 @@ function drawChart(first, second, path, target){
     //}); 
     var layout = {
           autosize: false,
-          width: 900,
+          width: 700,
           height: 250,
           margin: {
             l: 1,
