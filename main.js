@@ -7,13 +7,32 @@ function isItemInArray(array, item) {
     }
     return false;   // Not found
 }
+function getRandomSequence(loc)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", "series.txt", false);
+    var arr;
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                arr = allText.split('\n')[loc];
+            }
+        }
+    }
+    rawFile.send(null);
+    return arr;
+}
 
 function drawTable(ser1, ser2, matrix, path, target){
     var s = "";
     $(target).html("");
     for(var i=0; i< ser1.length; i++){
         var y = ser1.length - i - 1;
-        s = "<td style=\"color: #333\">" + Math.round(ser1[y]) + ":</td> "; 
+        s = "<td style=\"color: #333\">" +ser1[y] + ":</td> "; 
         for(var j =0; j<ser2.length; j++){
             if(isItemInArray(path, [i,j])){
                 s+="<td style=\"color: red\">" + Math.round(matrix[i][j]) + "</td> ";
@@ -27,7 +46,7 @@ function drawTable(ser1, ser2, matrix, path, target){
     // $("#res").append("____________");
     s = "<tr><td>S1/S2</td>";
      for(var x=0; x < ser2.length; x++){
-       s+= "<td>" + Math.round(ser2[x]) + "</td> ";
+       s+= "<td>" + ser2[x] + "</td> ";
      }
      s += "</tr>"
     $(target).append(s);
@@ -151,13 +170,24 @@ function ACDTW(ser1, ser2, g){
 
 function EWDTW(ser1, ser2, wmax, g){
     // TO DO: Implement EWDTW;
+    var ewdtw = new EnhancedWeightedDynamicTimeWarping(ser1, ser2);
+    path = ewdtw.getPath();
+    matrix = ewdtw.getMatrix();
+
+    drawTable(ser1, ser2, matrix, path, "#ewdtw-table");
+    drawChart(ser1, ser2, path, "ewdtw-chart");
 };
+
 
 
 $(document).ready(function() {
     var ser1,ser2,wmax=0,g=1;
     $('.randomseq').click(function() {
         if($(".randomseq").is(':checked')){
+            var n = Math.ceil(Math.random()*300);
+            var m = Math.ceil(Math.random()*300);
+            $('input[name=sequence1]').val(getRandomSequence(n) );
+            $('input[name=sequence2]').val(getRandomSequence(m));
             $('input[name=sequence1]').attr("disabled", true);
             $('input[name=sequence2]').attr("disabled",true);
         }
@@ -176,7 +206,7 @@ $(document).ready(function() {
         DTW(ser1, ser2);
         WDTW(ser1,ser2,wmax,g);
         ACDTW(ser1,ser2,g);
-        // EWDTW(ser1,ser2);
+        EWDTW(ser1,ser2);
     });
 
     $("#myRangeWeighted").on('input', function(){
