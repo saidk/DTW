@@ -13,7 +13,7 @@ function drawTable(ser1, ser2, matrix, path, target){
     $(target).html("");
     for(var i=0; i< ser1.length; i++){
         var y = ser1.length - i - 1;
-        s = "<td style=\"color: #ccc\">" + ser1[y] + ":</td> "; 
+        s = "<td style=\"color: #ccc\">" + Math.round(ser1[y]) + ":</td> "; 
         for(var j =0; j<ser2.length; j++){
             if(isItemInArray(path, [i,j])){
                 s+="<td style=\"color: red\">" + Math.round(matrix[i][j]) + "</td> ";
@@ -27,10 +27,14 @@ function drawTable(ser1, ser2, matrix, path, target){
     // $("#res").append("____________");
     s = "<tr><td></td>";
      for(var x=0; x < ser2.length; x++){
-       s+= "<td>" + ser2[x] + "</td> ";
+       s+= "<td>" + Math.round(ser2[x]) + "</td> ";
      }
      s += "</tr>"
     $(target).append(s);
+	$('.grid-item').css('height', '100%');
+	var height = $('.weighted_dtw').outerHeight()
+	$('.classic_dtw').css('height', height);
+	
 }
 
 function drawChart(first, second, path, target){
@@ -75,7 +79,7 @@ function drawChart(first, second, path, target){
     //}); 
     var layout = {
           autosize: false,
-          width: 800,
+          width: 600,
           height: 150,
           margin: {
             l: 1,
@@ -109,7 +113,7 @@ function drawChart(first, second, path, target){
                 showticklabels: false
           }
         };
-    Plotly.newPlot(target, data,layout,{displayModeBar: false});
+    Plotly.newPlot(target, data,layout,{displayModeBar: false, responsive:true});
     }
 
 

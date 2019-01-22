@@ -199,8 +199,8 @@ input {
   border: 1px solid rgba(0, 0, 0, 0.8);
   padding:10px;
   text-align:center;
-  height: -webkit-fill-available;
-  height:700px;
+ # height: -webkit-fill-available;
+ height: 400px;
 }
 .slidecontainer {
   width: 100%;
@@ -254,6 +254,12 @@ table.comicGreen {
   width: 100%;
   text-align: center;
   border-collapse: collapse;
+  overflow: hidden;
+  max-height: 500px;
+}
+table.comicGreen tbody{
+	display: block;
+	height: 200px;
 }
 table.comicGreen td, table.comicGreen th {
   border: 1px solid #4F7849;
