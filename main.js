@@ -13,7 +13,7 @@ function drawTable(ser1, ser2, matrix, path, target){
     $(target).html("");
     for(var i=0; i< ser1.length; i++){
         var y = ser1.length - i - 1;
-        s = "<td style=\"color: #ccc\">" + Math.round(ser1[y]) + ":</td> "; 
+        s = "<td style=\"color: #333\">" + Math.round(ser1[y]) + ":</td> "; 
         for(var j =0; j<ser2.length; j++){
             if(isItemInArray(path, [i,j])){
                 s+="<td style=\"color: red\">" + Math.round(matrix[i][j]) + "</td> ";
@@ -25,7 +25,7 @@ function drawTable(ser1, ser2, matrix, path, target){
         $(target).append("<tr>"+s+"</tr>");
     }
     // $("#res").append("____________");
-    s = "<tr><td></td>";
+    s = "<tr><td>S1/S2</td>";
      for(var x=0; x < ser2.length; x++){
        s+= "<td>" + Math.round(ser2[x]) + "</td> ";
      }
