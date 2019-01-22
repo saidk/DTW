@@ -18,7 +18,7 @@
             var sum = 0.0;
             for(var i = 0; i<ser1.length; i++){
                 for(var j = -4; j<= 4; j++){
-                    if(i > j){
+                    if(i - j >= 0 && i - j < ser1.length){
                         sum+= Math.abs(ser1[i] - ser1[i-j]);
                     }
                 }
@@ -26,7 +26,6 @@
             return Math.pow(sum/8,2);
         }
         var K = k();
-        
         var weight = function(i){
             var w =  1 / (1 + Math.exp(-1  * K));
             return w;

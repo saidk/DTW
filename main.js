@@ -98,8 +98,8 @@ function drawChart(first, second, path, target){
     //}); 
     var layout = {
           autosize: false,
-          width: 600,
-          height: 150,
+          width: 900,
+          height: 250,
           margin: {
             l: 1,
             r: 1,
@@ -200,8 +200,6 @@ $(document).ready(function() {
     $("#target").click(function() {
         ser1 = $("#sequence1").val().split(",");
         ser2 = $("#sequence2").val().split(",");
-        console.log(ser1);
-        console.log(ser2);
         
         DTW(ser1, ser2);
         WDTW(ser1,ser2,wmax,g);

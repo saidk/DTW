@@ -20,7 +20,6 @@
 
 
         var c = function(x){
-            console.log(x);
             return g*r*x + 1;
         }
 
